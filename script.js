@@ -1,5 +1,4 @@
 'use strict'
-
 const DomElement = function(selector, height, width, bg, fontSize) {
     this.selector = selector;
     this.height = height;
@@ -8,15 +7,13 @@ const DomElement = function(selector, height, width, bg, fontSize) {
     this.fontSize = fontSize;
 }
 
-DomElement.prototype.createDiv = function() {
+DomElement.prototype.createSquare = function() {
     const div = document.createElement('div');
     const p = document.createElement('p');
 
     div.appendChild(p);
 
     p.textContent = 'Olga';
-
-    p.style.cssText=`padding-top: 50px`;
 
     if (this.selector.substr(0, 1) === '.') {
         div.classList.add(this.selector.substr(1));
@@ -29,15 +26,43 @@ DomElement.prototype.createDiv = function() {
     background-color: ${this.bg};
     font-size: ${this.fontSize}px;
     color: white;
-    margin: 0 auto;
     text-align: center;
-    border-radius: 30px;`;
+    position: absolute;`;
 
     document.body.appendChild(div);
 }
 
-const displayDom = new DomElement('.block', 200, 200, '#5599FF', 60);
+const mySquare = (event) => {
+    const square = document.querySelector('.block');
+
+    const styles = getComputedStyle(square);
+
+    let left = parseInt(styles.left);
+    let top = parseInt(styles.top);
+
+    switch(event.key){
+        case "ArrowLeft":
+            if ( left > 0) {
+                square.style.left = left - 10 + "px";
+            }
+            break;
+        case "ArrowUp":
+            if (top > 0) {
+                square.style.top = top -10 + "px";
+            }
+            break;
+        case "ArrowRight":
+            square.style.left = left + 10 + "px";
+            break;
+        case "ArrowDown":
+            square.style.top = top + 10 + "px";
+            break;
+    }
+}
+
+const displayDom = new DomElement('.block', 100, 100, '#5599FF', 30);
 
 document.addEventListener('DOMContentLoaded', () => {
-    displayDom.createDiv();
+    displayDom.createSquare();
+    addEventListener('keydown', mySquare);
 })
